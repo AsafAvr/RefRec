@@ -8,7 +8,7 @@ from torch.utils.data import DataLoader
 from transformers import AutoTokenizer, AutoModel
 
 from knowledge_utils import save_json, get_paragraph_representation
-device = 'cpu' #'cuda'
+device = 'cuda'
 
 
 def load_data(path):
@@ -64,7 +64,7 @@ def inference(model, tokenizer, dataloader, model_name, aggregate_type):
     model.eval()
     with torch.no_grad():
         for x in tqdm(dataloader):
-            #torch.cuda.empty_cache() 
+            torch.cuda.empty_cache() 
             if model_name == 'chatglm' or model_name == 'chatglm2':
                 x = tokenizer(x, padding=True, truncation=True, return_tensors="pt",
                               return_attention_mask=True).to(device)
@@ -94,9 +94,9 @@ def main(knowledge_path, data_path, model_name, batch_size, aggregate_type):
     else:
         raise NotImplementedError
 
-    #torch.cuda.empty_cache() 
+    torch.cuda.empty_cache() 
     tokenizer = AutoTokenizer.from_pretrained(checkpoint,  trust_remote_code=True)
-    model = AutoModel.from_pretrained(checkpoint,  trust_remote_code=True).half() #.cuda()
+    model = AutoModel.from_pretrained(checkpoint,  trust_remote_code=True).half().cuda()
 
     item_vec = inference(model, tokenizer, item_loader, model_name, aggregate_type)
     hist_vec = inference(model, tokenizer, hist_loader, model_name, aggregate_type)
