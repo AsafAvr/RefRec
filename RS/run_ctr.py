@@ -1,7 +1,7 @@
 import subprocess
 
 # Training args
-data_dir = '../data/amz/proc_data'
+data_dir = '../data/ml-1m/proc_data'
 task_name = 'ctr'
 # dataset_name = 'amz'
 dataset_name = 'ml-1m'

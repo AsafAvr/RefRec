@@ -22,7 +22,7 @@ from dataset import AmzDataset
 from optimization import AdamW, get_cosine_schedule_with_warmup, get_constant_schedule_with_warmup
 
 
-def eval(model, test_loader):
+def model_eval(model, test_loader):
     model.eval()
     losses = []
     preds = []
@@ -47,11 +47,11 @@ def test(args):
     test_set = AmzDataset(args.data_dir, 'test', args.task, args.max_hist_len, args.augment, args.aug_prefix)
     test_loader = Data.DataLoader(dataset=test_set, batch_size=args.batch_size, shuffle=False)
     print('Test data size:', len(test_set))
-    auc, ll, loss, eval_time = eval(model, test_loader)
+    auc, ll, loss, eval_time = model_eval(model, test_loader)
     print("test loss: %.5f, test time: %.5f, auc: %.5f, logloss: %.5f" % (loss, eval_time, auc, ll))
 
 
-def load_model(args, dataset):
+def load_rec_model(args, dataset):
     algo = args.algo
     device = args.device
     if algo == 'DIN':
@@ -116,7 +116,7 @@ def train(args):
     test_loader = Data.DataLoader(dataset=test_set, batch_size=args.batch_size, shuffle=False)
     print('Train data size:', len(train_set), 'Test data size:', len(test_set))
 
-    model = load_model(args, test_set)
+    model = load_rec_model(args, test_set)
 
     optimizer, scheduler = get_optimizer(args, model, len(train_set))
 
@@ -141,7 +141,7 @@ def train(args):
             train_loss.append(loss.item())
             global_step += 1
         train_time = time.time() - t
-        eval_auc, eval_ll, eval_loss, eval_time = eval(model, test_loader)
+        eval_auc, eval_ll, eval_loss, eval_time = model_eval(model, test_loader)
         print("EPOCH %d  STEP %d train loss: %.5f, train time: %.5f, test loss: %.5f, test time: %.5f, auc: %.5f, "
               "logloss: %.5f" % (epoch, global_step, np.mean(train_loss), train_time, eval_loss,
                                  eval_time, eval_auc, eval_ll))

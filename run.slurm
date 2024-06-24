@@ -12,8 +12,8 @@
 #SBATCH --gres=gpu:1
 #SBATCH --constraint=a100
 
-#SBATCH --output=/home/yandex/DL20232024a/asafavrahamy/Projects/RefRec/logs/refrec.out # redirect stdout
-#SBATCH --error=/home/yandex/DL20232024a/asafavrahamy/Projects/RefRec/logs/refrec.err # redirect stderr
+#SBATCH --output=/home/yandex/DL20232024a/asafavrahamy/Projects/RefRec/logs/refrec_imprv.out # redirect stdout
+#SBATCH --error=/home/yandex/DL20232024a/asafavrahamy/Projects/RefRec/logs/refrec_imprv.err # redirect stderr
 
 bash /home/yandex/DL20232024a/asafavrahamy/Projects/RefRec/run.sh
 

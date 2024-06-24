@@ -12,7 +12,7 @@ class Config:
 def setup_logging():
     # Configure the logging system
     logging.basicConfig(
-        filename='logs/application.log',  # Log file path
+        filename='logs/application_improve.log',  # Log file path
         filemode='w',  # Overwrite mode
         format='%(asctime)s - %(levelname)s - %(message)s',  # Log message format
         datefmt='%Y-%m-%d %H:%M:%S',  # Timestamp format

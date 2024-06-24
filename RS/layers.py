@@ -33,6 +33,7 @@ class MLP(nn.Module):
         super(MLP, self).__init__()
         fc_layers = []
         for fc_dim in fc_dims:
+            # print(f"input dim: {input_dim}, fc_dim: {fc_dim}")
             fc_layers.append(nn.Linear(input_dim, fc_dim))
             fc_layers.append(nn.ReLU())
             fc_layers.append(nn.Dropout(p=dropout))
@@ -109,6 +110,7 @@ class ConvertNet(nn.Module):
             self.sub_module = MoE(moe_arch, inp_dim, dropout)
         elif self.type == 'HEA':
             print('convert module: HEA')
+            # print(args.export_num, args.specific_export_num, args.convert_arch, args.augment_num)
             ple_arch = args.export_num, args.specific_export_num, args.convert_arch, args.augment_num
             self.sub_module = HEA(ple_arch, inp_dim, dropout)
         else:

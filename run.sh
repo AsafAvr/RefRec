@@ -8,8 +8,8 @@ export MPLCONFIGDIR=/home/yandex/DL20232024a/asafavrahamy/.cache/matplotlib
 
 nvidia-smi
 
-# cd /home/yandex/DL20232024a/asafavrahamy/Projects/RefRec;
-# python main.py
+cd /home/yandex/DL20232024a/asafavrahamy/Projects/RefRec;
+python main.py
 
-cd /home/yandex/DL20232024a/asafavrahamy/Projects/RefRec/preprocess;
-python generate_data_and_prompt.py
+# cd /home/yandex/DL20232024a/asafavrahamy/Projects/RefRec/preprocess;
+# python generate_data_and_prompt.py

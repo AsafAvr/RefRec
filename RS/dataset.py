@@ -5,7 +5,7 @@ from utils import load_json, load_pickle
 
 
 class AmzDataset(Data.Dataset):
-    def __init__(self, data_path, set='train', task='ctr', max_hist_len=10, augment=False, aug_prefix=None):
+    def __init__(self, data_path, set='train', task='ctr', max_hist_len=10, augment=False, aug_prefix=None, user_ids=None):
         self.task = task
         self.max_hist_len = max_hist_len
         self.augment = augment
@@ -19,7 +19,6 @@ class AmzDataset(Data.Dataset):
         self.dense_dim = self.stat['dense_dim']
         if task == 'rerank':
             self.max_list_len = self.stat['rerank_list_len']
-        self.length = len(self.data)
         self.sequential_data = load_json(data_path + '/sequential_data.json')
         self.item2attribution = load_json(data_path + '/item2attributes.json')
         datamaps = load_json(data_path + '/datamaps.json')
@@ -28,7 +27,18 @@ class AmzDataset(Data.Dataset):
         if augment:
             self.hist_aug_data = load_json(data_path + f'/{aug_prefix}_augment.hist')
             self.item_aug_data = load_json(data_path + f'/{aug_prefix}_augment.item')
-            # print('item key', list(self.item_aug_data.keys())[:6], len(self.item_aug_data), self.item_num)
+
+        # # Filter data to include only specified user IDs
+        # if user_ids is not None:
+        #     self.data = [entry for entry in self.data if entry[0] in user_ids]
+
+        # train_test_split = load_json(data_path + '/train_test_split.json')
+        # self.data = []
+        # for user, items in train_test_split[set].items():
+        #     for idx, (item, rating) in enumerate(items):
+        #         self.data.append((int(user), idx, int(item), int(rating)))
+
+        self.length = len(self.data)
 
     def __len__(self):
         return self.length
@@ -45,6 +55,7 @@ class AmzDataset(Data.Dataset):
             hist_rating_seq = rating_seq[max(0, seq_idx - self.max_hist_len): seq_idx]
             hist_attri_seq = [self.item2attribution[str(idx)] for idx in hist_item_seq]
             out_dict = {
+                'uid': torch.tensor(uid).long(),
                 'iid': torch.tensor(iid).long(),
                 'aid': torch.tensor(attri_id).long(),
                 'lb': torch.tensor(lb).long(),
@@ -67,6 +78,7 @@ class AmzDataset(Data.Dataset):
             hist_rating_seq = rating_seq[max(0, seq_idx - self.max_hist_len): seq_idx]
             hist_attri_seq = [self.item2attribution[str(idx)] for idx in hist_item_seq]
             out_dict = {
+                'uid': torch.tensor(uid).long(),
                 'iid_list': torch.tensor(candidates).long(),
                 'aid_list': torch.tensor(candidates_attr).long(),
                 'lb_list': torch.tensor(candidate_lbs).long(),
@@ -85,5 +97,3 @@ class AmzDataset(Data.Dataset):
             raise NotImplementedError
 
         return out_dict
-
-
