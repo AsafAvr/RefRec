@@ -7,7 +7,6 @@ from model_utils import load_model, evaluate_model, add_new_prompt_to_df, load_l
 import pandas as pd
 import pickle
 
-
 def main(load_df_llm = False, load_local_sets = False, save_small_sets = False, retrain = False):
 
     # Analyze small datasets
