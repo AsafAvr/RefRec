@@ -6,4 +6,4 @@ Based and extending the work in Towards Open-World Recommendation with Knowledge
 https://github.com/YunjiaXi/Open-World-Knowledge-Augmented-Recommendation
 
 
-
+![Alt text](self-reflection-image.png)
